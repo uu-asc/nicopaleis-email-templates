@@ -1,0 +1,30 @@
+{% extends 'manager/_manager_.html' %}
+{% set maxchar = 24 %}
+{% set collapsible = True %}
+
+{% block entries %}
+{% for entry in data %}
+<div class="entry" tabindex="0">
+    <div class="entry--label">{{ entry }}</div>
+    <button class="monospace" onclick="removeEntry(this)">x</button>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block editor %}
+<div class="editor">
+    <div>
+        <div><b>Value</b></div>
+        <textarea id="value" class="layout" value="" placeholder="Enter {{ module[:-1] }}..." disabled></textarea>
+    </div>
+</div>
+{% endblock %}
+
+{% block logic %}
+<script>
+    const template =
+        `<div class="entry--label">?</div>
+        <button class="monospace" onclick="removeEntry(this)">x</button>`;
+</script>
+<script src="{{ url_for('static', filename='scripts/editor.js') }}"></script>
+{% endblock %}

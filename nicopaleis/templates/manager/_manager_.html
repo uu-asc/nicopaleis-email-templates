@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block page %}
+<div class="page">
+    <h2>{% block title %}{{ module.capitalize() }}{% endblock title %}</h2>
+    <div class="actions">
+        {% block actions %}{% endblock actions %}
+        <div class="actions--add-entry">
+            <input id="addition" class="actions--add-entry--field" type="text" placeholder="Add {{ module[:-1] }}...">
+            <button class="actions--add-entry--button monospace" onclick="addEntry()">+</button>
+        </div>
+        <button id="submit">Save</button>
+    </div>
+</div>
+{% endblock page %}
+
+{% block content %}
+    <div id="navigation" class="navigation">
+        <input id="search" type="text" placeholder="Search {{ module }}...">
+        <div class="navigation--header">Label</div>
+        <div id="entries">
+        {% block entries %}{% endblock entries %}
+        </div>
+    </div>
+    {% if collapsible %}
+    <div class="collapsible">&#9664;</div>
+    {% endif %}
+    {% block editor %}{% endblock editor %}
+{% endblock content %}
+
+{% block script %}
+<script>
+    var data = {{ data|tojson }};
+    const maxchar = {{ maxchar }};
+    const page = '/{{ module }}/';
+    const values = {{ values|tojson }};
+</script>
+<script src="{{ url_for('static', filename='scripts/entries.js') }}"></script>
+{% block logic %}{% endblock logic %}
+{% endblock script %}

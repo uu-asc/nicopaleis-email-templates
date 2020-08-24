@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Nicopaleis</title>
+    <!-- styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <header>
+        <div class="banner">
+            <a class="logo" href="/.">
+                <img src="{{ url_for('static', filename='paleis.svg') }}" alt="Nicopaleis">
+                <div class="logo--name">Nicopaleis</div>
+            </a>
+            <nav class="monospace">
+                <a href="/parameters">parameters</a>
+                <a href="/snippets">snippets</a>
+                <a href="/layouts">layouts</a>
+                <a href="/messages">messages</a>
+                <a href="javascript:shutDown()">[x]</a>
+            </nav>
+        </div>
+        <div id="flash" class="flash monospace">
+        {% for message in get_flashed_messages() %}
+            <div class="monospace">{{ message }}</div>
+        {% endfor %}
+        </div>
+        {% block page %}{% endblock%}
+    </header>
+    <main>
+        {% block content %}{% endblock%}
+    </main>
+    <footer>
+        <div class="monospace">
+            e-mail template generator
+        </div>
+        <div class="monospace">
+            v2.00
+        </div>
+        <div class="monospace">
+            <a href="mailto:l.c.vriend@uu.nl">l.c.vriend@uu.nl</a>
+        </div>
+    </footer>
+<script>
+    const flash = document.getElementById('flash');
+
+    // FLASH
+    function displayFlash (text) {
+        flash.innerText = text;
+        setTimeout(() => flash.innerText = '', 2500);
+    }
+
+    function shutDown() {
+        fetch('/shutdown')
+            .then((response) => {
+                displayFlash('application has shut down---you may close this tab')
+            });
+        };
+</script>
+{% block script %}{% endblock %}
+<script src="{{ url_for('static', filename='scripts/collapsibles.js') }}"></script>
+</body>
+</html>

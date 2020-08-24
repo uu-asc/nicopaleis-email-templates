@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block page %}
+<div class="page">
+    <h2>{% block title %}Home{% endblock %}</h2>
+</div>
+{% endblock page %}
+
+{% block content %}
+<div class="info">
+    <h3>Inleiding</h3>
+    <p>
+        Met deze applicatie kun je e-mailberichten beheren en daar vervolgens in huisstijl opgemaakte html van genereren. De grondgedachten zijn:
+    </p>
+    <p>
+        <ul>
+            <li>Scheiding van inhoud en opmaak.</li>
+            <li>Geparametriseerde teksten.</li>
+            <li>Modulaire opbouw via blokteksten.</li>
+            <li>Consistente opmaak van berichten.</li>
+        </ul>
+    </p>
+    <p>
+        De applicatie maakt gebruik van <i>markdown:</i> een opmaaktaal voor platte tekst. Markdown kan eenvoudig worden omgezet naar html. Zie <a href="https://nl.wikipedia.org/wiki/Markdown">deze pagina</a> voor een beknopt overzicht van de opmaakmogelijkheden in markdown.
+    </p>
+</div>
+<div class="collapsible">&#9664;</div>
+
+<div class="rightpane">
+    <h3>Navigatie</h3>
+    <div class="appmap">
+        <a href="/parameters" class="button appmap--item">Parameters</a>
+        <div class="appmap--item">
+            <div class="appmap--name">Parameters</div>
+            <ul>
+                <li>Variabele velden.</li>
+                <li>Bruikbaar in snippets, layouts en messages.</li>
+                <li>Verwijs met <code>$label</code> naar parameters.</li>
+            </ul>
+        </div>
+        <a href="/snippets" class="button appmap--item">Snippets</a>
+        <div class="appmap--item">
+            <div class="appmap--name">Snippets</div>
+            <ul>
+                <li>Herbruikbare blokteksten.</li>
+                <li>Bruikbaar in layouts en messages.</li>
+                <li>Mogen parameters bevatten.</li>
+                <li>Verwijs met <code>$label</code> naar snippets.</li>
+            </ul>
+        </div>
+        <a href="/layouts" class="button appmap--item">Layouts</a>
+        <div class="appmap--item">
+            <div class="appmap--name">Layouts</div>
+            <ul>
+                <li>Opmaak van messages in html.</li>
+                <li>Mogen parameters en snippets bevatten.</li>
+                <li>Gebruik <code>$content</code> voor locatie message-tekst.</li>
+            </ul>
+        </div>
+        <a href="/messages" class="button appmap--item">Messages</a>
+        <div class="appmap--item">
+            <div class="appmap--name">Messages</div>
+            <ul>
+                <li>Tekstuele inhoud in markdown.</li>
+                <li>Mogen parameters en snippets bevatten.</li>
+                <li>Gekoppeld aan layout.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

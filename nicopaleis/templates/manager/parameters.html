@@ -1,0 +1,45 @@
+{% extends 'manager/_manager_.html' %}
+{% set maxchar = 24 %}
+
+{% block entries %}
+{% for entry in data %}
+<div class="entry">
+    <div class="entry--label">{{ entry }}</div>
+    <input name="{{ entry }}" type="text" value="{{ data[entry]['value_nl'] }}" onblur="saveValue(this, 'value_nl')">
+    <input name="{{ entry }}" type="text" value="{{ data[entry]['value_en'] }}" onblur="saveValue(this, 'value_en')">
+    <button class="monospace" onclick="removeEntry(this)">x</button>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block logic %}
+<script>
+    document.getElementById('navigation').classList.add('parameters');
+    const template =
+        `<div class="entry--label">?</div>
+        <input name="?" type="text" onblur="saveValue(this, 'value_nl')">
+        <input name="?" type="text" onblur="saveValue(this, 'value_en')">
+        <button class="monospace" onclick="removeEntry(this)">x</button>`;
+
+    // MOVE NEXT ON INPUTS WHEN PRESSING ENTER
+    const inputs = entries.getElementsByTagName('input');
+    entries.onkeyup = () => moveNext(event);
+    function moveNext (event) {
+        if (event.key !== 'Enter') return;
+        let input = event.target.closest('input');
+
+        for(var i = 0; i < inputs.length; i++) {
+            if (inputs[i] == input) {
+                var j = i + 1;
+                if (j < inputs.length) {
+                    let entry = inputs[j];
+                    entry.focus();
+                    entry.select();
+                } else {
+                    submit.focus();
+                };
+            };
+        };
+    };
+</script>
+{% endblock %}

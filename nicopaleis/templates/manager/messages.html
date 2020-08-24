@@ -1,0 +1,169 @@
+{% extends 'manager/_manager_.html' %}
+{% set maxchar = 15 %}
+{% set collapsible = True %}
+
+{% block actions %}
+<button id="clipboard" onclick="toClipboard()" disabled>Clipboard</button>
+<button id="show" onclick="openPreview()" disabled>Show</button>
+<label for="nl">NL</label>
+<input type="radio" id="show_nl" name="language" onclick="showLanguage('nl')">
+<label for="en">EN</label>
+<input type="radio" id="show_en" name="language" onclick="showLanguage('en')">
+{% endblock actions %}
+
+{% block entries %}
+    {% for entry in data %}
+    <div class="entry" tabindex="0">
+        <div class="entry--label">{{ entry }}</div>
+        <button class="monospace" onclick="removeEntry(this)">x</button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block editor %}
+<div class="editor">
+    <div>
+        <label>Layout</label>
+        <select id="layout">
+            <option value="" selected disabled hidden>Select layout...</option>
+            {% for layout in layouts %}
+            <option value="{{ layout }}">{{ layout }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% for language in ['nl', 'en'] %}
+    <div class="message" id="{{ language }}">
+        <div class="message--column">
+            <h4>Message {{ language.upper() }}</h4>
+            <div>
+                <input id="subject_{{ language }}" type="text" class="subject" placeholder="Enter subject...">
+            </div>
+            <textarea id="body_{{ language }}" value="" placeholder="Enter {{ module[:-1] }}..." disabled></textarea>
+        </div>
+        <div class="message--column">
+            <h4>Preview</h4>
+            <div id="preview_{{ language }}" class="preview"></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block logic %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+    const template =
+        `<div class="entry--label">?</div>
+        <button class="monospace" onclick="removeEntry(this)">x</button>`;
+    const snippets = {{ snippets|tojson }};
+    const parameters = {{ parameters|tojson }};
+    const layouts = {{ layouts|tojson }};
+    var langSetting = 'nl';
+
+
+    // RENDER MESSAGES
+    for (let language of ['nl', 'en']) {
+        let body = document.getElementById('body_' + language);
+        body.onkeyup = () => render(language);
+    }
+
+    function render (language) {
+        let body = document.getElementById('body_' + language);
+        let preview = document.getElementById('preview_' + language);
+        preview.innerHTML = marked(prime(body.value, language));
+    };
+
+    function prime (string, language) {
+        let stack = [parameters[language], snippets[language]];
+        for (let item of stack) {
+            let keys = Object.keys(item);
+            keys.sort();
+            keys.reverse();
+            for (let key of keys) {
+                let regex = new RegExp('\\$' + key, 'g');
+                string = string.replace(regex, item[key]);
+            };
+        };
+        return string;
+    };
+
+    function renderFull () {
+        let key = document.getElementById('layout').value;
+        let layout = layouts[key]['value'];
+        let body = document.getElementById('body_' + langSetting);
+        let regex = new RegExp('\\$content', 'g');
+        layout = prime(layout, langSetting);
+        body = marked(prime(body.value, langSetting));
+        layout = layout.replace(regex, body);
+        return layout;
+    };
+
+
+    // ACTIVATE SHOW BUTTON IF TEMPLATE IS FILLED
+    const layout = document.getElementById('layout');
+    const clipboard = document.getElementById('clipboard')
+    const show = document.getElementById('show');
+    show.disabled = true;
+    clipboard.disabled = true;
+    layout.addEventListener('change', function () {
+        if (layout.value) {
+            show.disabled = false;
+            clipboard.disabled = false;
+        };
+    });
+
+
+    // HIDE LANGUAGE
+    document.getElementById('show_nl').checked = true;
+    showLanguage('nl')
+    function showLanguage (language) {
+        langSetting = language;
+        let messages = document.getElementsByClassName('message');
+        for (let i = 0; i < messages.length; i++) {
+            let message = messages[i];
+            if (message.id === language) {
+                message.style.display = null;
+            } else {
+                message.style.display = 'none';
+            };
+        };
+    };
+
+
+    // MESSAGE LOGIC FOR ENTRY SELECTION
+    function messageLogic () {
+        if (layout.value) {
+            show.disabled = false;
+            clipboard.disabled = false;
+        } else {
+            show.disabled = true;
+            clipboard.disabled = true;
+        };
+        // render languages
+        for (let language of ['nl', 'en']) {
+            render(language);
+        };
+    };
+
+
+    // COPY TO CLIPBOARD
+    function toClipboard() {
+        output = renderFull();
+        navigator.clipboard.writeText(output).then(function() {
+            console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    };
+
+
+    // OPEN PREVIEW IN NEW TAB
+    function openPreview() {
+        output = renderFull();
+        var win = window.open("", "Title", `toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=960,top=0,left=${screen.width-840}`);
+        win.document.body.innerHTML = output;
+    };
+</script>
+<script src="{{ url_for('static', filename='scripts/editor.js') }}"></script>
+{% endblock %}
