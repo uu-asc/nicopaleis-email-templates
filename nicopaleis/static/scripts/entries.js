@@ -1,8 +1,8 @@
-const entries    = document.getElementById('entries');
-const addition   = document.getElementById('addition');
-const search     = document.getElementById('search');
-const submit     = document.getElementById('submit');
-const regex      = RegExp('[^a-zA-Z_\d]+');
+const entries  = document.getElementById('entries');
+const addition = document.getElementById('addition');
+const search   = document.getElementById('search');
+const submit   = document.getElementById('submit');
+const regex    = RegExp('[^a-zA-Z_\d]+');
 
 
 // SEARCH ENTRIES
@@ -12,8 +12,14 @@ function filterEntries() {
     if (entries) {
         let rows = entries.getElementsByClassName('entry');
         for (let i = 0; i < rows.length; i++) {
-            let col = rows[i].getElementsByClassName('entry--label')[0];
-            if (col.innerText.toLowerCase().indexOf(filter) > -1) {
+            let col = rows[i].getElementsByClassName('entry--label')[0].innerText.toLowerCase();
+            let match;
+            if (filter.startsWith('$')) {
+                match = (data[col]['body_nl'].includes(filter)||data[col]['body_en'].includes(filter))
+            } else {
+                match = col.indexOf(filter) > -1
+            };
+            if (match) {
                 rows[i].style.display = '';
             } else {
                 rows[i].style.display = 'none';
