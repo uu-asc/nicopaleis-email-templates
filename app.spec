@@ -40,7 +40,7 @@ exe = EXE(
     strip=False,
     upx=True,
     console=True,
-    icon='nicopaleis\\static\\tajmahal.ico',
+    icon='nicopaleis\\static\\favicon.ico',
 )
 coll = COLLECT(
     exe,
