@@ -6,8 +6,9 @@
 <div class="page">
     <h2>{% block title %}{{ module.capitalize() }}{% endblock title %}</h2>
     <div class="actions">
-        <button onclick="download()">Download xml</button>
         <div>Selected: <span id="nselected">0</span></div>
+        <div>Lines: <span id="nlines">0</span></div>
+        <button onclick="download()">Download xml</button>
         <label for="filename">Filename</label>
         <input type="text" id="filename">
     </div>
@@ -43,6 +44,7 @@
     const search    = document.getElementById('search');
 
     const nselected = document.getElementById('nselected');
+    const nlines    = document.getElementById('nlines');
     const filename  = document.getElementById('filename')
     const xml       = document.getElementById('xml');
 
@@ -101,6 +103,7 @@
         };
     };
 
+
     function sendData (selection) {
         fetch(page, {
             method: "POST",
@@ -117,6 +120,7 @@
             };
             response.json().then(function(data) {
                 xml.innerText = data;
+                nlines.innerText = countLines(data)
             });
         });
     };
@@ -131,6 +135,12 @@
         a.download = filename.value;
         a.click();
     };
+
+
+    function countLines(text){
+        return (text.match(/\n/g) || '').length + 1
+    };
+
 
     date = new Date().toISOString().slice(0, 10);
     filename.value = date + "_messages.xml";
