@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% set maxchar = 15 %}
+{% set collapsible = True %}
+
+{% block page %}
+<div class="page">
+    <h2>{% block title %}{{ module.capitalize() }}{% endblock title %}</h2>
+    <div class="actions">
+        <button onclick="download()">Download xml</button>
+        <div>Selected: <span id="nselected">0</span></div>
+        <label for="filename">Filename</label>
+        <input type="text" id="filename">
+    </div>
+</div>
+{% endblock page %}
+
+
+{% block content %}
+    <div id="navigation" class="navigation">
+        <input id="search" type="text" placeholder="Search {{ module }}...">
+        <div class="navigation--header">Label</div>
+        <select name="messages" id="messages" multiple>
+            {% for entry in data %}
+                <option value="{{ entry }}">{{ entry }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% if collapsible %}
+    <div class="collapsible">&#9664;</div>
+    {% endif %}
+    <div class="xml">
+        <code id="xml"></code>
+    </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    var data = {{ data|tojson }};
+    const valueName = 'body';
+    const page = '/nicopaleis/{{ module }}/';
+
+    const entries   = document.getElementById('messages');
+    const search    = document.getElementById('search');
+
+    const nselected = document.getElementById('nselected');
+    const filename  = document.getElementById('filename')
+    const xml       = document.getElementById('xml');
+
+
+    entries.addEventListener('click', gatherSelected);
+    function gatherSelected() {
+        if (entries) {
+            let options = entries.getElementsByTagName('option');
+            var selection = [];
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    selection.push(options[i].value);
+                };
+            };
+            sendData(selection);
+            nselected.innerText = selection.length;
+        };
+    };
+
+
+    // CTRL-A SELECTS ALL
+    window.onkeydown = function(e) {
+        if (e.ctrlKey && e.keyCode == 65) {
+            document.querySelectorAll("select[multiple]").forEach(function(select) {
+            if (e.target === select) {
+                e.preventDefault();
+                select.querySelectorAll('option').forEach(function(option) {
+                    option.selected = true;
+                    });
+                gatherSelected();
+                };
+            });
+        };
+    };
+
+    // SEARCH ENTRIES
+    search.addEventListener('keyup', filterEntries);
+    function filterEntries() {
+        let filter = search.value.toLowerCase();
+        if (entries) {
+            let options = entries.getElementsByTagName('option');
+            for (let i = 0; i < options.length; i++) {
+                let option = options[i].value.toLowerCase();
+                let match;
+                if (filter.startsWith('$')) {
+                    match = (data[option][valueName + '_nl'].includes(filter)||data[option][valueName + '_en'].includes(filter))
+                } else {
+                    match = option.indexOf(filter) > -1
+                };
+                if (match) {
+                    options[i].style.display = '';
+                } else {
+                    options[i].style.display = 'none';
+                };
+            };
+        };
+    };
+
+    function sendData (selection) {
+        fetch(page, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(selection),
+            cache: "no-cache",
+            headers: new Headers({"content-type": "application/json"})
+        }).then(function(response) {
+            if (response.status !== 200) {
+                console.log(
+                    `Looks like there was a problem. Status code: ${response.status}`
+                );
+            return;
+            };
+            response.json().then(function(data) {
+                xml.innerText = data;
+            });
+        });
+    };
+
+
+    function download(){
+        let text = xml.innerText;
+        let blob = new Blob([text], {type: "text/plain"});
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = filename.value;
+        a.click();
+    };
+
+    date = new Date().toISOString().slice(0, 10);
+    filename.value = date + "_messages.xml";
+</script>
+{% endblock %}

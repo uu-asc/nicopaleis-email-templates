@@ -61,9 +61,15 @@ def create_app(test_config=None):
         layouts,
         messages,
         settings,
+        xml,
         transfer,
     )
     app.register_blueprint(parameters.bp)
+    app.register_blueprint(snippets.bp  )
+    app.register_blueprint(layouts.bp   )
+    app.register_blueprint(messages.bp  )
     app.register_blueprint(settings.bp  )
+    app.register_blueprint(xml.bp       )
+    app.register_blueprint(transfer.bp  )
 
     return app
