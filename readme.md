@@ -16,6 +16,6 @@ De tool is ontworpen voor de Centrale Studentenadministratie. In hun berichtgevi
 
 ### Versie 2.1
 - Preview voor snippets
-- Zoeken op $parameters en $snippets
+- Zoeken op `$parameters` en `$snippets`
 - Definitie van settings
 - Export xml voor inlezen OSIRIS
