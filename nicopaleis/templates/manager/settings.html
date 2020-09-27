@@ -1,0 +1,135 @@
+{% extends 'manager/_manager_.html' %}
+{% set maxchar = 24 %}
+{% set collapsible = True %}
+
+{% block entries %}
+{% for entry in data %}
+<div class="entry" tabindex="0">
+    <div class="entry--label">{{ entry }}</div>
+    <button class="monospace" onclick="removeEntry(this)">x</button>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block editor %}
+<div class="editor">
+    <div>
+        <div class="settings">
+            <label>Faculteit</label>
+            <select id="faculteit">
+                <option value="" selected disabled hidden>Select faculteit...</option>
+                {% for option in dropdown['faculteit'] %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Communicatiekanaal</label>
+            <select id="communicatiekanaal">
+                <option value="" selected disabled hidden>Select communicatiekanaal...</option>
+                {% for option in dropdown['communicatiekanaal'] %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Type mededeling</label>
+            <select id="type_mededeling">
+                <option value="" selected disabled hidden>Select type mededeling...</option>
+                {% for option in dropdown['type_mededeling'] %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Verstuur in context</label>
+            <select id="verstuur_in_context">
+                <option value="" selected disabled hidden>Select type mededeling...</option>
+                {% for option in dropdown['verstuur_in_context'] %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Formaat</label>
+            <select id="formaat">
+                <option value="" selected disabled hidden>Select formaat...</option>
+                {% for option in dropdown['formaat'] %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="verstuur_vanaf_tijdstip">Verstuur vanaf tijdstip</label>
+            <input type="time" id="verstuur_vanaf_tijdstip" name="verstuur_vanaf_tijdstip">
+        </div>
+
+
+        <hr>
+
+        <div class="settings">
+            <label for="muteerbaar">Muteerbaar</label>
+            <input type="checkbox" id="muteerbaar" name="muteerbaar" value="J">
+
+            <label for="actueel">Actueel</label>
+            <input type="checkbox" id="actueel" name="actueel" value="J">
+
+            <label for="zichtbaar_in_student">Zichtbaar in student</label>
+            <input type="checkbox" id="zichtbaar_in_student" name="zichtbaar_in_student" value="J">
+        </div>
+
+        <hr>
+
+        <div class="settings">
+            <label>E-mail adres</label>
+            <select id="e_mail_adres_1">
+                <option value="" selected disabled hidden>Select e-mail adres...</option>
+                {% for option, descr in dropdown['e_mail_adres'].items() %}
+                <option value="{{ option }}">{{ descr }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Antwoordadres</label>
+            <select id="antwoordadres">
+                <option value="" selected disabled hidden>Select antwoordadres...</option>
+                {% for option, descr in dropdown['antwoordadres'].items() %}
+                <option value="{{ option }}">{{ descr }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="ander_antwoordadres">Ander antwoordadres</label>
+            <input type="ander_antwoordadres" id="ander_antwoordadres" name="ander_antwoordadres">
+
+            <label for="toon_antwoordadres_no_reply">Toon antwoordadres noreply</label>
+            <input type="checkbox" id="toon_antwoordadres_no_reply" name="toon_antwoordadres_no_reply" value="J">
+
+            <label for="toon_antwoordadres_mijzelf">Toon antwoordadres mijzelf</label>
+            <input type="checkbox" id="toon_antwoordadres_mijzelf" name="toon_antwoordadres_mijzelf" value="J">
+
+            <label for="toon_antwoordadres_opgeven">Toon antwoordadres opgeven</label>
+            <input type="checkbox" id="toon_antwoordadres_opgeven" name="toon_antwoordadres_opgeven" value="J">
+        </div>
+
+        <hr>
+
+        <div class="settings">
+            <label>Documentset</label>
+            <select id="documentset">
+                <option value="" selected disabled hidden>Select documentset...</option>
+                {% for option in dropdown['documentset'] %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="keuze_zichtbaar_in_document">Zichtbaar in document</label>
+            <input type="checkbox" id="keuze_zichtbaar_in_document" name="keuze_zichtbaar_in_document" value="J">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block logic %}
+<script>
+    const nameValNL = 'value';
+    const nameValEN = 'value';
+    const template =
+        `<div class="entry--label">?</div>
+        <button class="monospace" onclick="removeEntry(this)">x</button>`;
+</script>
+<script src="{{ url_for('static', filename='scripts/editor.js') }}"></script>
+{% endblock %}

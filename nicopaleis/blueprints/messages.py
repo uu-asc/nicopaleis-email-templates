@@ -20,19 +20,20 @@ def manage():
     layouts = fetch_data('layouts', ['value'])
     parameters = split(fetch_data('parameters', ['value_nl', 'value_en']))
     snippets = split(fetch_data('snippets', ['value_nl', 'value_en']))
-
     snippets = {
         'nl': {k:prime(v, parameters['nl']) for k,v in snippets['nl'].items()},
         'en': {k:prime(v, parameters['en']) for k,v in snippets['en'].items()},
     }
+    settings = fetch_data('settings', ['muteerbaar'])
 
     table = 'messages'
-    values = [
+    fields = [
         'subject_nl',
         'subject_en',
         'body_nl',
         'body_en',
         'layout',
+        'settings',
     ]
     data = fetch_data(table, fields)
     if request.method == 'POST':
@@ -45,6 +46,7 @@ def manage():
         layouts=layouts,
         parameters=parameters,
         snippets=snippets,
+        settings=settings,
         data=data,
         fields=fields,
     )
