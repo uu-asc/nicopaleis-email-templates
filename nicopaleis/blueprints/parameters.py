@@ -11,15 +11,15 @@ bp = Blueprint('parameters', __name__, url_prefix='/nicopaleis/parameters')
 @bp.route('/', methods=('GET', 'POST'))
 def manage():
     table = 'parameters'
-    values = ['value_nl', 'value_en']
-    data = fetch_data(table, values)
+    fields = ['value_nl', 'value_en']
+    data = fetch_data(table, fields)
     if request.method == 'POST':
         new_data = request.get_json()
-        put_data(table, new_data, values)
+        put_data(table, new_data, fields)
         return redirect(url_for('parameters.manage'))
     return render_template(
         'manager/parameters.html',
         module='parameters',
         data=data,
-        values=values,
+        fields=fields,
     )

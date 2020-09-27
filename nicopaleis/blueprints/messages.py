@@ -41,10 +41,10 @@ def manage():
         'body_en',
         'layout',
     ]
-    data = fetch_data(table, values)
+    data = fetch_data(table, fields)
     if request.method == 'POST':
         new_data = request.get_json()
-        put_data(table, new_data, values)
+        put_data(table, new_data, fields)
         return redirect(url_for('messages.manage'))
     return render_template(
         'manager/messages.html',
@@ -53,5 +53,5 @@ def manage():
         parameters=parameters,
         snippets=snippets,
         data=data,
-        values=values,
+        fields=fields,
     )

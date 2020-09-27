@@ -33,6 +33,7 @@
     var data = {{ data|tojson }};
     const maxchar = {{ maxchar }};
     const page = '/nicopaleis/{{ module }}/';
+    const fields = {{ fields|tojson }};
 </script>
 <script src="{{ url_for('static', filename='scripts/entries.js') }}"></script>
 {% block logic %}{% endblock logic %}
