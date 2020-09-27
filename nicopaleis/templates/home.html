@@ -23,13 +23,16 @@
     <p>
         De applicatie maakt gebruik van <i>markdown:</i> een opmaaktaal voor platte tekst. Markdown kan eenvoudig worden omgezet naar html. Zie <a href="https://nl.wikipedia.org/wiki/Markdown">deze pagina</a> voor een beknopt overzicht van de opmaakmogelijkheden in markdown.
     </p>
+    <p>
+        Gebruik <code>ctrl-S</code> om wijzigingen op te slaan!
+    </p>
 </div>
 <div class="collapsible">&#9664;</div>
 
 <div class="rightpane">
     <h3>Navigatie</h3>
     <div class="appmap">
-        <a href="/parameters" class="button appmap--item">Parameters</a>
+        <a href="{{ url_for('parameters.manage') }}" class="button appmap--item">Parameters</a>
         <div class="appmap--item">
             <div class="appmap--name">Parameters</div>
             <ul>
@@ -38,7 +41,7 @@
                 <li>Verwijs met <code>$label</code> naar parameters.</li>
             </ul>
         </div>
-        <a href="/snippets" class="button appmap--item">Snippets</a>
+        <a href="{{ url_for('snippets.manage') }}" class="button appmap--item">Snippets</a>
         <div class="appmap--item">
             <div class="appmap--name">Snippets</div>
             <ul>
@@ -48,7 +51,7 @@
                 <li>Verwijs met <code>$label</code> naar snippets.</li>
             </ul>
         </div>
-        <a href="/layouts" class="button appmap--item">Layouts</a>
+        <a href="{{ url_for('layouts.manage') }}" class="button appmap--item">Layouts</a>
         <div class="appmap--item">
             <div class="appmap--name">Layouts</div>
             <ul>
@@ -57,7 +60,14 @@
                 <li>Gebruik <code>$content</code> voor locatie message-tekst.</li>
             </ul>
         </div>
-        <a href="/messages" class="button appmap--item">Messages</a>
+        <a href="{{ url_for('settings.manage') }}" class="button appmap--item">Settings</a>
+        <div class="appmap--item">
+            <div class="appmap--name">Settings</div>
+            <ul>
+                <li>Instellingen van het bericht.</li>
+            </ul>
+        </div>
+        <a href="{{ url_for('messages.manage') }}" class="button appmap--item">Messages</a>
         <div class="appmap--item">
             <div class="appmap--name">Messages</div>
             <ul>
