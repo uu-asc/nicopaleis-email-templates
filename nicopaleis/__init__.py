@@ -3,6 +3,9 @@ from pathlib import Path
 from flask import Flask, request, render_template
 
 
+version = 'v2.1'
+
+
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
@@ -32,6 +35,11 @@ def create_app(test_config=None):
 
     # ensure the instance folder exists
     instance_path.mkdir(parents=True, exist_ok=True)
+
+
+    @app.context_processor
+    def inject_version():
+        return dict(version=version)
 
     # a simple page that says hello
     @app.route('/')
