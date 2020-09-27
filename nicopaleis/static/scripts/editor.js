@@ -4,6 +4,7 @@ entries.addEventListener('click', selectEntry)
 function selectEntry(event) {
     if (event.which !== 1 && event.key !== 'Enter') return;
     let entry = event.target.closest('.entry');
+    if (entry === null) return;
     let label = entry.getElementsByClassName('entry--label')[0].innerText;
     if (typeof data[label] !== 'undefined') {
         let entries = document.getElementsByClassName('entry');
@@ -13,10 +14,10 @@ function selectEntry(event) {
         }
         entry.classList.add('selected');
         // load data
-        for (let value of values) {
-            let input = document.getElementById(value);
+        for (let field of fields) {
+            let input = document.getElementById(field);
             input.disabled = false;
-            input.value = data[label][value];
+            input.value = data[label][field];
             input.setAttribute('name', label);
         };
         // MESSAGES
@@ -30,18 +31,18 @@ function selectEntry(event) {
 
 
 // STORE ENTRY VALUES
-for (let value of values) {
-    let input = document.getElementById(value);
-    input.onblur = function () {saveValue(this, value)};
+for (let field of fields) {
+    let input = document.getElementById(field);
+    input.onblur = function () {saveValue(this, field)};
 };
 
 
 // PAGE INIT
 function initValues() {
-    for (let value of values) {
-        let input = document.getElementById(value);
+    for (let field of fields) {
+        let input = document.getElementById(field);
         input.disabled = true;
-        input.value = '';
+        input.field = '';
     };
 };
 initValues()
