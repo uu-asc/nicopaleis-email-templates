@@ -4,17 +4,10 @@ from flask import (
     Blueprint, redirect, render_template, request, url_for
 )
 
-from nicopaleis.entries import fetch_data, put_data
+from nicopaleis.entries import fetch_data, put_data, split
 
 
 bp = Blueprint('messages', __name__, url_prefix='/nicopaleis/messages')
-
-
-def split(dct):
-    return {
-        'nl': {k:v['value_nl'] for k,v in dct.items()},
-        'en': {k:v['value_en'] for k,v in dct.items()},
-    }
 
 
 def prime(string, parameters):

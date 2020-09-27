@@ -1,16 +1,22 @@
 from nicopaleis.db import get_db
 
 
-def fetch_data(table, columns):
+def fetch_data(table, columns=None):
+    if columns is None:
+        columns = []
     if isinstance(columns, str):
         columns = [columns]
+    columns = ['label'] + columns
+
     sql = (
-        f"SELECT label, {','.join(col for col in columns)}"
+        f"SELECT {','.join(col for col in columns)}"
         f"  FROM {table}"
         "  ORDER BY label;"
     )
+
     db = get_db()
     rows = db.execute(sql).fetchall()
+
     data = {}
     for row in rows:
         data[row['label']] = {col: row[col] for col in columns}
@@ -30,3 +36,10 @@ def put_data(table, data, columns):
     )
     db.commit()
     return None
+
+
+def split(dct, name='value'):
+    return {
+        'nl': {k:v[f'{name}_nl'] for k,v in dct.items()},
+        'en': {k:v[f'{name}_en'] for k,v in dct.items()},
+    }
