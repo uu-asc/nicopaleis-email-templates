@@ -12,15 +12,17 @@
 <body>
     <header>
         <div class="banner">
-            <a class="logo" href="/.">
+            <a class="logo" href="{{ url_for('home') }}">
                 <img src="{{ url_for('static', filename='paleis.svg') }}" alt="Nicopaleis">
                 <div class="logo--name">Nicopaleis</div>
             </a>
             <nav class="monospace">
-                <a href="/parameters">parameters</a>
-                <a href="/snippets">snippets</a>
-                <a href="/layouts">layouts</a>
-                <a href="/messages">messages</a>
+                <a href="{{ url_for('parameters.manage') }}">parameters</a>
+                <a href="{{ url_for('snippets.manage') }}">snippets</a>
+                <a href="{{ url_for('layouts.manage') }}">layouts</a>
+                <a href="{{ url_for('settings.manage') }}">settings</a>
+                <a href="{{ url_for('messages.manage') }}">messages</a>
+                <a href="{{ url_for('xml.manage') }}">xml</a>
                 <a href="javascript:shutDown()">[x]</a>
             </nav>
         </div>
@@ -39,7 +41,7 @@
             e-mail template generator
         </div>
         <div class="monospace">
-            v2.00
+            {{ version }}
         </div>
         <div class="monospace">
             <a href="mailto:l.c.vriend@uu.nl">l.c.vriend@uu.nl</a>
