@@ -5,7 +5,7 @@ from flask import (
 from nicopaleis.entries import fetch_data, put_data
 
 
-bp = Blueprint('transfer', __name__, url_prefix='/transfer')
+bp = Blueprint('transfer', __name__, url_prefix='/nicopaleis/transfer')
 
 
 @bp.route('/', methods=('GET', 'POST'))

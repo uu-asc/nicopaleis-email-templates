@@ -7,7 +7,7 @@ from flask import (
 from nicopaleis.entries import fetch_data, put_data
 
 
-bp = Blueprint('messages', __name__, url_prefix='/messages')
+bp = Blueprint('messages', __name__, url_prefix='/nicopaleis/messages')
 
 
 def split(dct):

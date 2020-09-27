@@ -43,7 +43,8 @@ def create_app(test_config=None):
 
     # a simple page that says hello
     @app.route('/')
-    def hello():
+    @app.route('/nicopaleis')
+    def home():
         return render_template('home.html')
 
     @app.route('/shutdown')
