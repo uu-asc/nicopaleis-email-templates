@@ -14,25 +14,41 @@
 {% block editor %}
 <div class="editor">
     <div class="values">
-        <div>
-            <div><b>Value NL</b></div>
-            <textarea id="value_nl" cols="54" rows="16" value="" placeholder="Enter {{ module[:-1] }}..." disabled></textarea>
+    {% for language in ['nl', 'en'] %}
+        <div class="snippet">
+            <div>
+                <h4>Value {{ language }}</h4>
+                <textarea id="value_{{ language }}" cols="54" rows="16" value="" placeholder="Enter {{ module[:-1] }}..." disabled></textarea>
+            </div>
+            <div>
+                <h4>Preview</h4>
+                <div id="preview_{{ language }}" class="preview"></div>
+            </div>
         </div>
-        <div>
-            <div><b>Value EN</b></div>
-            <textarea id="value_en" cols="54" rows="16" value="" placeholder="Enter {{ module[:-1] }}..." disabled></textarea>
-        </div>
+    {% endfor %}
     </div>
 </div>
 {% endblock %}
 
 {% block logic %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-    const nameValNL = 'value_nl';
-    const nameValEN = 'value_en';
+    const valueName = 'value';
+    const parameters = {{ parameters|tojson }};
+    const stack = [parameters];
     const template =
         `<div class="entry--label">?</div>
         <button class="monospace" onclick="removeEntry(this)">x</button>`;
+</script>
+<script src="{{ url_for('static', filename='scripts/preview.js') }}"></script>
+<script>
+    // MESSAGE LOGIC FOR ENTRY SELECTION
+    function messageLogic () {
+        // render languages
+        for (let language of ['nl', 'en']) {
+            render(language);
+        };
+    };
 </script>
 <script src="{{ url_for('static', filename='scripts/editor.js') }}"></script>
 {% endblock %}

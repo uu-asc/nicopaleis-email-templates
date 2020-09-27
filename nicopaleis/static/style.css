@@ -3,8 +3,14 @@
 
 
 :root {
-    --height-header: 108px;
+    --height-header: 112px;
     --height-footer: 64px;
+    --palette-shade0: #22223b;
+    --palette-shade1: #4a4e69;
+    --palette-shade2: #9a8c98;
+    --palette-shade3: #c9ada7;
+    --palette-shade4: #f2e9e4;
+
 }
 
 *,
@@ -17,7 +23,7 @@
 html,
 body {
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 body {
@@ -28,6 +34,11 @@ body {
         "head"
         "main"
         "foot";
+}
+
+hr {
+    border: 1px solid var(--palette-shade1);
+    margin: 24px 0;
 }
 
 /* HEADER LAYOUT */
@@ -74,10 +85,11 @@ header {
 
     .flash {
         display: flex;
+        flex-shrink: 0;
         justify-content: center;
         color: white;
-        background-color: gray;
-        height: 12px;
+        background-color: var(--palette-shade1);
+        height: 16px;
     }
     .page {
         padding: 0 16px;
@@ -94,6 +106,9 @@ header {
             align-items: center;
             gap: 16px;
         }
+            .actions > input {
+                width: 320px;
+            }
             .actions--add-entry {
                 display: flex;
             }
@@ -109,7 +124,10 @@ header {
 /* MAIN LAYOUT */
 main {
     grid-area: main;
+    height: 100%;
     display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
     /* NAVIGATION */
@@ -147,13 +165,13 @@ main {
                 scroll-snap-align: start;
             }
             .entry.selected {
-                background-color: gray;
+                background-color: var(--palette-shade1);
                 font-weight: bold;
                 color: white;
             }
             .entry:hover {
                 cursor: pointer;
-                background-color: lightgray;
+                background-color: var(--palette-shade3);
             }
             .entry--label {
                 width: 100%;
@@ -170,7 +188,7 @@ main {
         align-items: center;
         width: 12px;
         height: 100%;
-        background-color: gray;
+        background-color: var(--palette-shade0);
         color: white;
         font-size: 8px;
         cursor: pointer;
@@ -191,36 +209,85 @@ main {
         grid-template-columns: 1fr 1fr;
         gap: 16px;
     }
+    .value {
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
+    .snippet {
+        display: grid;
+        height: calc(100vh - (var(--height-header) + var(--height-footer) + 88px));
+        grid-template-rows: 70% 30%;
+    }
+    .settings {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: 1fr 2fr;
+        justify-items: start;
+    }
+    .settings > select {
+        width: 100%;
+    }
+    .options {
+        display: flex;
+        justify-items: center;
+    }
+        .options > div {
+            display: grid;
+            gap: 4px;
+            align-content: center;
+            margin-right: 16px;
+            grid-template-columns: 1fr 2fr;
+        }
+        .options > div > label {
+            font-size: 0.8em;
+        }
     .message {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
     }
-    .message--column {
-        display: flex;
-        gap: 16px;
-        flex-direction: column;
-        height: calc(100vh - (var(--height-header) + var(--height-footer) + 88px));
-    }
-        .subject {
-            width: 100%;
+        .message--column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: calc(100vh - (var(--height-header) + var(--height-footer) + 88px));
         }
+            .subject {
+                width: 100%;
+            }
 
-        .preview {
-            padding: 0.25em;
-            border: 1px solid lightgray;
-            border-radius: 3px;
-            height: 100%;
-            overflow-y: scroll;
-        }
-        .preview h1,
-        .preview h2,
-        .preview h3,
-        .preview h4,
-        .preview p,
-        .preview table {
-            margin-bottom: 12px;
-        }
+            .preview {
+                padding: 0.25em;
+                border: 1px solid lightgray;
+                border-radius: 3px;
+                height: 100%;
+                overflow-y: scroll;
+            }
+            .preview h1,
+            .preview h2,
+            .preview h3,
+            .preview h4,
+            .preview p,
+            .preview table {
+                margin-bottom: 1em;
+            }
+
+    .xml {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        width: 100%;
+        min-height: min-content;
+        overflow-y: scroll;
+    }
+    #map {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 100%;
+        z-index: 100;
+    }
 
     /* HOME */
     main p {
@@ -259,7 +326,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: darkgray;
+    background: var(--palette-shade1);
     color: white;
     padding: 2rem;
     bottom: 0;
@@ -270,19 +337,28 @@ footer a {
 
 /* STYLINGS */
 input,
-textarea,
-button {
-    padding: 0.25em;
-    border: 1px solid lightgray;
+textarea {
+    padding: 4px;
+    border: 1px solid var(--palette-shade3);
     border-radius: 3px;
 }
 textarea {
     width: 100%;
     height: calc(100% - 32px);
     resize: none;
+    flex-grow: 0;
+}
+textarea:disabled,
+textarea[disabled] {
+    background-color: var(--palette-shade4);
+}
+button {
+    padding: 0.25em;
+    border: 1px solid lightgray;
+    border-radius: 3px;
 }
 button:hover {
-    background-color: gray;
+    background-color: var(--palette-shade1);
     color: white;
     border: 1px solid darkgray;
 }
@@ -295,6 +371,12 @@ button[disabled]{
     background-color: #f0f0f0;
     color: #aaaaaa;
 }
+select {
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    width: 100%;
+    height: 100%;
+}
 
 .button {
     display: flex;
@@ -302,19 +384,19 @@ button[disabled]{
     align-items: center;
     /* align-self: center; */
     padding: 1em;
-    background-color: #f0f0f0;
+    background-color: var(--palette-shade4);
     border: 1px solid lightgray;
     border-radius: 3px;
     text-decoration: none;
     color: black;
 }
 .button:hover {
-    background-color: gray;
+    background-color: var(--palette-shade1);
     color: white;
     border: 1px solid darkgray;
 }
 
 .monospace {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.8em;
+    font-size: 0.9em;
 }

@@ -22,14 +22,25 @@
 
 {% block editor %}
 <div class="editor">
-    <div>
-        <label>Layout</label>
-        <select id="layout">
-            <option value="" selected disabled hidden>Select layout...</option>
-            {% for layout in layouts %}
-            <option value="{{ layout }}">{{ layout }}</option>
-            {% endfor %}
-        </select>
+    <div class="options">
+        <div>
+            <label>Layout</label>
+            <select id="layout">
+                <option value="" selected disabled hidden>Select layout...</option>
+                {% for layout in layouts %}
+                <option value="{{ layout }}">{{ layout }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Settings</label>
+            <select id="settings">
+                <option value="" selected disabled hidden>Select settings...</option>
+                {% for setting in settings %}
+                <option value="{{ setting }}">{{ setting }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
     {% for language in ['nl', 'en'] %}
     <div class="message" id="{{ language }}">
@@ -51,45 +62,19 @@
 
 {% block logic %}
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
 <script>
-    const nameValNL = 'body_nl';
-    const nameValEN = 'body_en';
+    const valueName = 'body';
     const template =
-        `<div class="entry--label">?</div>
-        <button class="monospace" onclick="removeEntry(this)">x</button>`;
+    `<div class="entry--label">?</div>
+    <button class="monospace" onclick="removeEntry(this)">x</button>`;
     const snippets = {{ snippets|tojson }};
     const parameters = {{ parameters|tojson }};
+    const stack = [parameters, snippets];
     const layouts = {{ layouts|tojson }};
     var langSetting = 'nl';
-
-
-    // RENDER MESSAGES
-    for (let language of ['nl', 'en']) {
-        let body = document.getElementById('body_' + language);
-        body.onkeyup = () => render(language);
-    }
-
-    function render (language) {
-        let body = document.getElementById('body_' + language);
-        let preview = document.getElementById('preview_' + language);
-        preview.innerHTML = marked(prime(body.value, language));
-    };
-
-    function prime (string, language) {
-        let stack = [parameters[language], snippets[language]];
-        for (let item of stack) {
-            let keys = Object.keys(item);
-            keys.sort();
-            keys.reverse();
-            for (let key of keys) {
-                let regex = new RegExp('\\$' + key, 'g');
-                string = string.replace(regex, item[key]);
-            };
-        };
-        return string;
-    };
-
+</script>
+<script src="{{ url_for('static', filename='scripts/preview.js') }}"></script>
+<script>
     function renderFull () {
         let key = document.getElementById('layout').value;
         let layout = layouts[key]['value'];
@@ -103,9 +88,9 @@
 
 
     // ACTIVATE SHOW BUTTON IF TEMPLATE IS FILLED
-    const layout = document.getElementById('layout');
+    const layout    = document.getElementById('layout');
     const clipboard = document.getElementById('clipboard')
-    const show = document.getElementById('show');
+    const show      = document.getElementById('show');
     show.disabled = true;
     clipboard.disabled = true;
     layout.addEventListener('change', function () {

@@ -15,7 +15,7 @@ function filterEntries() {
             let col = rows[i].getElementsByClassName('entry--label')[0].innerText.toLowerCase();
             let match;
             if (filter.startsWith('$')) {
-                match = (data[col][nameValNL].includes(filter)||data[col][nameValEN].includes(filter))
+                match = (data[col][valueName + '_nl'].includes(filter)||data[col][valueName + '_en'].includes(filter))
             } else {
                 match = col.indexOf(filter) > -1
             };
