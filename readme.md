@@ -19,3 +19,9 @@ De tool is ontworpen voor de Centrale Studentenadministratie. In hun berichtgevi
 - Zoeken op `$parameters` en `$snippets`
 - Definitie van settings
 - Export xml voor inlezen OSIRIS
+
+### Model
+![flowchart](nicopaleis/static/flowchart.svg)
+
+### Beperkingen
+- Data wordt bij elke mutatie integraal overschreven

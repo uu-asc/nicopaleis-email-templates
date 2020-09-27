@@ -297,11 +297,16 @@ main {
         display: flex;
         flex-direction: column;
         width: 400px;
+        overflow-y: scroll;
     }
     .info,
     .rightpane,
     .appmap {
         padding: 16px;
+    }
+    .info > img,
+    .info > h4 {
+        padding: 16px 0;
     }
     .appmap {
         display: grid;
