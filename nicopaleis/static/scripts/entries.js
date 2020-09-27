@@ -75,8 +75,8 @@ function addEntry () {
         div.innerHTML = template.replace(/\?/g, entry);
         entries.insertBefore(div, entries.childNodes[0]);
         let initialization = {};
-        for (let value of values) {
-            initialization[value] = '';
+        for (let field of fields) {
+            initialization[field] = '';
         };
         data[entry] = initialization;
     };
