@@ -106,7 +106,7 @@ header {
             align-items: center;
             gap: 16px;
         }
-            .actions > input {
+            .actions > input[type=text] {
                 width: 320px;
             }
             .actions--add-entry {
