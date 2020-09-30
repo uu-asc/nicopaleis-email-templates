@@ -18,6 +18,9 @@ function selectEntry(event) {
             let input = document.getElementById(field);
             input.disabled = false;
             input.value = data[label][field];
+            if (input.type === 'checkbox' && data[label][field] === 'J') {
+                input.checked = true;
+            };
             input.setAttribute('name', label);
         };
         // MESSAGES

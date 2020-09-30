@@ -103,6 +103,14 @@ addition.addEventListener('keyup', function(event) {
 // STORE ENTRY VALUES
 function saveValue (element, destination) {
     let entry = element.getAttribute('name');
-    let value = element.value;
-    data[entry][destination] = value;
+    if (element.type === 'checkbox') {
+        if (element.checked === true) {
+            data[entry][destination] = 'J';
+        } else {
+            data[entry][destination] = 'N';
+        };
+    } else {
+        let value = element.value;
+        data[entry][destination] = value;
+    };
 };
