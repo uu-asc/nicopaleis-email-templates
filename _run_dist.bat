@@ -1,1 +1,1 @@
-call dist\app\nicopaleis.exe
+call dist\app-nicopaleis\nicopaleis.exe
