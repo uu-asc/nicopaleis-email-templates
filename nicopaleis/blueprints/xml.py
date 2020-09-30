@@ -3,10 +3,8 @@ from string import Template
 from markdown import markdown
 from flask import (
     Blueprint,
-    redirect,
     render_template,
     request,
-    url_for,
     make_response,
     jsonify,
 )
@@ -19,16 +17,23 @@ bp = Blueprint('xml', __name__, url_prefix='/nicopaleis/xml')
 
 
 def prime(string, parameters):
+    "Return string where all `parameters` have been substituted in `string`."
+
     template = Template(string)
     return template.safe_substitute(parameters)
 
 
 def fix(string):
+    "Convert special characters to entity references within xml tags."
+
     replacements = {
         '<br>': '<br />',
         '<hr>': '<hr />',
+        '&':    '&amp;',
         '<':    '&lt;',
         '>':    '&gt;',
+        '"':    '&quot;',
+        "'":    '&apos;',
     }
     for replacement in replacements.items():
         string = string.replace(*replacement)
@@ -36,6 +41,8 @@ def fix(string):
 
 
 def taggify(tag, value):
+    "Return <`tag`>`value`</`tag`>."
+
     if value == '':
         return ''
     tag = tag.upper()
@@ -43,6 +50,9 @@ def taggify(tag, value):
 
 
 def prep_snippets(snip, param):
+    """Split snippets `snip` into separate languages
+    and substitute parameters `param` with their values."""
+
     snip = split(snip)
     snip['nl'] = {k:prime(v, param['nl']) for k,v in snip['nl'].items()}
     snip['en'] = {k:prime(v, param['en']) for k,v in snip['en'].items()}
@@ -50,6 +60,8 @@ def prep_snippets(snip, param):
 
 
 def build_xml(selection, messages):
+    "Return all selected messages as xml."
+
     content = []
     for message in messages:
         if not message['mededeling'] in selection:
@@ -57,7 +69,6 @@ def build_xml(selection, messages):
         row = '\n'.join([taggify(k, v) for k,v in message.items() if v != ''])
         content.append(f"<OSU_MEDEDELING_ROW>\n{row}</OSU_MEDEDELING_ROW>\n")
     content = [item for item in content if item != '']
-    print(content)
     content = '\n'.join(content)
     return (
         '<?xml version="1.0"?>\n'
