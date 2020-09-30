@@ -8,6 +8,7 @@ added_files =[
     ('nicopaleis/static/*.*', 'nicopaleis/static'),
     ('nicopaleis/static/scripts/*.*', 'nicopaleis/static/scripts'),
     ('instance/*.*', 'var/nicopaleis-instance'),
+    ('nicopaleis/reference_table.json', 'nicopaleis')
     ]
 
 a = Analysis(
@@ -50,5 +51,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='app',
+    name='app-nicopaleis',
 )
