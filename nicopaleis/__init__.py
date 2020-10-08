@@ -62,6 +62,7 @@ def create_app(test_config=None):
         messages,
         settings,
         xml,
+        booklet,
         transfer,
     )
     app.register_blueprint(parameters.bp)
@@ -70,6 +71,7 @@ def create_app(test_config=None):
     app.register_blueprint(messages.bp  )
     app.register_blueprint(settings.bp  )
     app.register_blueprint(xml.bp       )
+    app.register_blueprint(booklet.bp      )
     app.register_blueprint(transfer.bp  )
 
     return app

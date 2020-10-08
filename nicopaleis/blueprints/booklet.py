@@ -13,7 +13,7 @@ from nicopaleis.db import get_db
 from nicopaleis.entries import fetch_data, put_data, split
 
 
-bp = Blueprint('xml', __name__, url_prefix='/nicopaleis/xml')
+bp = Blueprint('booklet', __name__, url_prefix='/nicopaleis/booklet')
 
 
 def prime(string, parameters):
@@ -21,24 +21,6 @@ def prime(string, parameters):
 
     template = Template(string)
     return template.safe_substitute(parameters)
-
-
-def fix(string):
-    "Convert special characters to entity references within xml tags."
-
-    replacements = {
-        '<br>': '<br />',
-        '<hr>': '<hr />',
-        '&':    '&amp;',
-        '<':    '&lt;',
-        '>':    '&gt;',
-        '"':    '&quot;',
-        "'":    '&apos;',
-        '    ': '&#009;',
-    }
-    for replacement in replacements.items():
-        string = string.replace(*replacement)
-    return string
 
 
 def taggify(tag, value):
@@ -60,27 +42,11 @@ def prep_snippets(snip, param):
     return snip
 
 
-def build_xml(selection, messages):
+def build_html(selection, messages, title):
     "Return all selected messages as xml."
-
-    content = []
-    for message in messages:
-        if not message['mededeling'] in selection:
-            continue
-        row = '\n'.join([taggify(k, v) for k,v in message.items() if v != ''])
-        content.append(f"<OSU_MEDEDELING_ROW>\n{row}</OSU_MEDEDELING_ROW>\n")
-    content = [item for item in content if item != '']
-    content = '\n'.join(content)
-    return (
-        '<?xml version="1.0"?>\n'
-        '<ROWSET>\n'
-        '<ROW>\n'
-        '     <OSU_MEDEDELING>\n'
-        f'{content}\n'
-        '     </OSU_MEDEDELING>\n'
-        '</ROW>\n'
-        '</ROWSET>\n'
-    )
+    title = title.split('.')[0]
+    messages = [msg for msg in messages if msg['mededeling'] in selection]
+    return render_template('booklet.html', book_title=title, messages=messages)
 
 
 @bp.route('/', methods=('GET', 'POST'))
@@ -134,15 +100,15 @@ def manage():
 
         msg['mededeling'] = msg['mededeling'].upper()
 
-        msg['koptekst'] = fix(prime(msg['koptekst'], variables['nl']))
-        msg['koptekst_en'] = fix(prime(msg['koptekst_en'], variables['en']))
+        msg['koptekst'] = prime(msg['koptekst'], variables['nl'])
+        msg['koptekst_en'] = prime(msg['koptekst_en'], variables['en'])
         msg['koptekst_nls'] = msg['koptekst']
 
         msg['inhoud'] = markdown(prime(msg['inhoud'], variables['nl']))
         msg['inhoud_en'] = markdown(prime(msg['inhoud_en'], variables['en']))
 
-        msg['inhoud'] = fix(prime(layout_nl, dict(content=msg['inhoud'])))
-        msg['inhoud_en'] = fix(prime(layout_en, dict(content=msg['inhoud_en'])))
+        msg['inhoud'] = prime(layout_nl, dict(content=msg['inhoud']))
+        msg['inhoud_en'] = prime(layout_en, dict(content=msg['inhoud_en']))
         msg['inhoud_nls'] = msg['inhoud']
 
         msg['omschrijving'] = msg['koptekst']
@@ -154,12 +120,13 @@ def manage():
     if request.method == 'POST':
         r = request.get_json()
         selection = r['selection']
-        xml = build_xml(selection, messages)
-        return make_response(jsonify(xml))
+        filename = r['filename']
+        booklet = build_html(selection, messages, filename)
+        return make_response(jsonify(booklet))
     return render_template(
         'manager/export.html',
-        module='xml',
-        extension='xml',
-        mime='text/plain',
+        module='booklet',
+        extension='html',
+        mime='text/html',
         data = [msg['mededeling'] for msg in messages]
     )

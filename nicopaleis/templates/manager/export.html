@@ -8,7 +8,7 @@
     <div class="actions">
         <div>Selected: <span id="nselected">0</span></div>
         <div>Lines: <span id="nlines">0</span></div>
-        <button onclick="download()">Download xml</button>
+        <button onclick="download()">Download {{ module }}</button>
         <label for="filename">Filename</label>
         <input type="text" id="filename">
     </div>
@@ -108,7 +108,10 @@
         fetch(page, {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify(selection),
+            body: JSON.stringify({
+                "filename": filename.value,
+                "selection": selection
+            }),
             cache: "no-cache",
             headers: new Headers({"content-type": "application/json"})
         }).then(function(response) {
@@ -126,14 +129,23 @@
     };
 
 
+    // DOWNLOAD SELECTION
     function download(){
         let text = xml.innerText;
-        let blob = new Blob([text], {type: "text/plain"});
+        let blob = new Blob([text], {type: "{{ mime }}"});
         let url = window.URL.createObjectURL(blob);
         let a = document.createElement("a");
         a.href = url;
         a.download = filename.value;
         a.click();
+    };
+
+
+    // DOWNLOAD ON ENTER
+    document.getElementById("filename").onkeypress = function(event){
+        if (event.keyCode == 13 || event.which == 13){
+            download();
+        }
     };
 
 
@@ -143,6 +155,6 @@
 
 
     date = new Date().toISOString().slice(0, 10);
-    filename.value = date + "_messages.xml";
+    filename.value = date + "_messages.{{ extension }}";
 </script>
 {% endblock %}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book_title }}</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        body > * {
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+        nav > ol > li > ul {
+            padding-left: 1em;
+        }
+        nav a {
+            padding: 0.25em;
+            text-decoration: none;
+            color: black;
+        }
+        nav a:hover {
+            background-color: lightblue;
+        }
+        nav ol {
+            counter-reset: item;
+        }
+        nav li {
+            display: block;
+        }
+        nav li:before {
+            content: counters(item, ".") " ";
+            counter-increment: item;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>{{ book_title }}</h1>
+    <h2 id="#inhoudsopgave">Inhoudsopgave</h2>
+    <nav>
+        <ol>
+            {% for msg in messages %}
+            <li>
+                <a href="#{{ msg['mededeling'] }}">{{ msg['mededeling'] }}</a>
+                <ol>
+                    <li>
+                        <a href="#{{ msg['mededeling'] }}_nl">{{ msg['koptekst'] }}</a>
+                    </li>
+                    <li>
+                        <a href="#{{ msg['mededeling'] }}_en">{{ msg['koptekst_en'] }}</a>
+                    </li>
+                </ol>
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
+
+    <h2>Berichten</h2>
+    {% for msg in messages %}
+    <h3 id="{{ msg['mededeling'] }}">{{ msg['mededeling'] }}</h3>
+    <h4 id="{{ msg['mededeling'] }}_nl">{{ msg['koptekst'] }}</h4>
+    <div>{{ msg['inhoud']|safe }}</div>
+    <h4 id="{{ msg['mededeling'] }}_en">{{ msg['koptekst_en'] }}</h4>
+    <div>{{ msg['inhoud_en']|safe }}</div>
+    <hr>
+    {% endfor %}
+</body>
+</html>
