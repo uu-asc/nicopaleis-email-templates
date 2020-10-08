@@ -104,7 +104,7 @@ addition.addEventListener('keyup', function(event) {
 function saveValue (element, destination) {
     let entry = element.getAttribute('name');
     if (element.type === 'checkbox') {
-        if (element.checked === true) {
+        if (element.checked) {
             data[entry][destination] = 'J';
         } else {
             data[entry][destination] = 'N';
