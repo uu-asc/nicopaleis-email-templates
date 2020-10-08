@@ -38,8 +38,23 @@ def manage():
     data = fetch_data(table, fields)
     if request.method == 'POST':
         new_data = request.get_json()
+
+        checkboxes = [
+            'muteerbaar',
+            'actueel',
+            'zichtbaar_in_student',
+            'keuze_zichtbaar_in_document',
+            'toon_antwoordadres_no_reply',
+            'toon_antwoordadres_mijzelf',
+            'toon_antwoordadres_opgeven',
+        ]
+
+        for item in new_data.values():
+            for checkbox in checkboxes:
+                if item[checkbox] == '':
+                    item[checkbox] = 'N'
+
         put_data(table, new_data, fields)
-        print(fetch_data(table, 'muteerbaar'))
         return redirect(url_for('settings.manage'))
     return render_template(
         'manager/settings.html',

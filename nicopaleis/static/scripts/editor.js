@@ -18,8 +18,12 @@ function selectEntry(event) {
             let input = document.getElementById(field);
             input.disabled = false;
             input.value = data[label][field];
-            if (input.type === 'checkbox' && data[label][field] === 'J') {
-                input.checked = true;
+            if (input.type === 'checkbox') {
+                if (data[label][field] === 'J') {
+                    input.checked = true;
+                } else {
+                    input.checked = false;
+                };
             };
             input.setAttribute('name', label);
         };
@@ -46,6 +50,9 @@ function initValues() {
         let input = document.getElementById(field);
         input.disabled = true;
         input.field = '';
+        if (input.type === 'checkbox') {
+            input.checked = false;
+        };
     };
 };
 initValues()
