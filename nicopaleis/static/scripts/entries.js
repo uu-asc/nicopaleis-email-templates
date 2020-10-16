@@ -2,7 +2,7 @@ const entries  = document.getElementById('entries');
 const addition = document.getElementById('addition');
 const search   = document.getElementById('search');
 const submit   = document.getElementById('submit');
-const regex    = RegExp('[^a-zA-Z_\d]+');
+const regex    = RegExp('[^a-zA-Z_0-9]+');
 
 
 // SEARCH ENTRIES
