@@ -1,0 +1,89 @@
+{"faculteit": [
+    "DGK",
+    "UU",
+    "IVLOS",
+    "GW",
+    "GNK",
+    "BETA",
+    "GEO",
+    "RA",
+    "OC-UMC",
+    "REBO",
+    "JCU",
+    "SW",
+    "UC"
+],
+"communicatiekanaal": [
+    "E-MAIL",
+    "NIET_VERSTUREN",
+    "STUDIELINK"
+],
+"type_mededeling": [
+    "AANMELDING",
+    "ZAAK",
+    "VOORLICHTING",
+    "TESTMAILS",
+    "EXAMENCOMMISSIE",
+    "FIXUS",
+    "MATCHING",
+    "SYSTEEM",
+    "ATTENDERING",
+    "OPLEIDING",
+    "RESULTATEN",
+    "FINANC-INS-OPL",
+    "BSA",
+    "TOETSING",
+    "BEURZEN",
+    "VRIJSTELLING",
+    "CURSUSINVOER",
+    "BACKOFFICE",
+    "INCASSO",
+    "DIPLOMERING",
+    "INSCHR-OPL",
+    "VOORZIENINGEN",
+    "ONDERWIJS-L",
+    "AANMELDING",
+    "UITNODIGING",
+    "INT-OFFICE",
+    "AFSTUDEREN",
+    "TOELATINGSBESCH",
+    "OSIRIS-AANMELD",
+    "WERKSTROOM",
+    "TOELATING",
+    "STUDIELINK",
+    "IO-INKOMEND",
+    "ROOSTER"
+],
+"formaat": [
+    "HTML",
+    "TEKST"
+],
+"verstuur_in_context": [
+    "io_aanvr",
+    "sstop",
+    "bstud_p",
+    "sinh",
+    "bstud_a",
+    "bstud_x",
+    "io_dos",
+    "io_docent_oordeel",
+    "bstud_n"
+],
+"documentset": [
+    "IO",
+    "S_BSA",
+    "S-FACT",
+    "MEDEDELING",
+    "BA_S_CIJFERS",
+    "S-MED-TOELB"
+],
+"e_mail_adres": {
+    "I": "instellings",
+    "C": "extern",
+    "S": "studielink"
+},
+"antwoordadres": {
+    "M": "mijzelf",
+    "O": "op te geven",
+    "G": "geen (no reply)"
+}}
